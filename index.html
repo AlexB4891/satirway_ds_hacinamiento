@@ -1,0 +1,3221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Centro de Investigación Estadística ERGOSTATS">
+
+<title>Paso a pasa para el análisis de una operación estadística</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="document_files/libs/clipboard/clipboard.min.js"></script>
+<script src="document_files/libs/quarto-html/quarto.js"></script>
+<script src="document_files/libs/quarto-html/popper.min.js"></script>
+<script src="document_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="document_files/libs/quarto-html/anchor.min.js"></script>
+<link href="document_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="document_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="document_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="document_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="document_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Paso a pasa para el análisis de una operación estadística</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Centro de Investigación Estadística ERGOSTATS </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<style>
+ol.custom-list {
+    list-style: none;
+    counter-reset: list-counter;
+}
+ol.custom-list li {
+    counter-increment: list-counter;
+    position: relative;
+}
+ol.custom-list li::before {
+    content: counter(list-counter);
+    position: absolute;
+    left: -2em;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background-color: purple;
+    color: white;
+    text-align: center;
+    line-height: 1.5em;
+}
+ol.custom-list li:not(.active) {
+    opacity: 0.6;
+}
+ol.custom-list li:not(.active)::before {
+    background-color: #888;
+}
+ol.custom-list li strong {
+    font-weight: bold;
+}
+</style>
+<section id="allá-por-2016-." class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="allá-por-2016-.">Allá por 2016 ….</h2>
+<p>Un joven Alex Bajaña trabajaba en su trabajo de tesis. Bajo la dirección de Juan Pablo Diaz escribí el trabajo <em>Los efectos del hacinamiento sobre la salud y bienestar de los niños.</em> Con este trabajo me gradué de Ingeniero en Ciencias Económicas y Financieras<em>.</em> Terminar ese trabajo de investigación no fue solo mi mérito sino de algunos compañeros, como Miguel, de quien hablamos en el Webinar anterior.</p>
+<p>En ese entonces conocía poco de R y su utilidad para hacer no solo la estimación de mis modelos sino tambien para trabajar a la par en la redacción de mi documento. En ese entonces trabaje con cuatro herramientas (😬):</p>
+<ul>
+<li><p><strong>SPSS</strong>, para generar el análisis exploratorio, limpieza de datos y la estimación de mis modelos.</p></li>
+<li><p><strong>Microsoft Excel,</strong> para generar mis gráficos que irían en mi tesis</p></li>
+<li><p><strong>Microsoft Word</strong>, para editar mi documento con los insumos de SPSS y Excel.</p></li>
+<li><p><strong>LaTex,</strong> para trabajar en la presentación.</p></li>
+</ul>
+<p>Tres doritos despues, con la vida laboral adquirí mucha experiencia en el uso de R, aprendí otras herramientas y estoy aprendiendo algunas otras, <strong><em>nunca se deja de aprender</em></strong>. (🤓). Si bien en ese entonces debía emplear estas cuatro herramientas, hoy en día tenemos herramientas que integran todas estas funcionalidades en un solo lugar: <strong><em>Rstudio.</em></strong> En este IDE podemos trabajar con dos tipos de archivos <code>Rmarkdown</code> y <code>Quarto.</code>Si bien cada uno de ellos tiene sus particularidades, ambos proveen a nosotros los analistas de datos, una interfaz de fácil uso que integra el código y la narrativa. 😻</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="https://i.pinimg.com/originals/fd/48/08/fd4808e0daa23ee81ea47dcf5400b801.jpg" class="img-fluid"></p>
+</div></div><p>En este Webinar, <strong><em>Paso a pasa para el análisis de una operación estadística,</em></strong> vamos a:</p>
+<ul>
+<li><p>Presentar la aproximación a la invesigación que hiciera ahora con un documento Quarto</p></li>
+<li><p>Replicar algunos resultados de mi tesis, con algunos apuntes sobre visualización</p></li>
+<li><p>Comparar los resultados de los modelos que realice para crear discusión acerca del uso de operaciones estadísticas</p></li>
+</ul>
+<p>Vamos por ello:</p>
+<ol class="custom-list">
+    <li class="active"><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<p>En el viaje hacia la comprensión de <em>los efectos del hacinamiento sobre la salud y bienestar de los niños</em> en Ecuador, partí de la Encuesta de Condiciones de Vida (ECV). Manejar este instrumento, fue un verdadero desafio, con mi directorio nos propusimos entonces <strong>explorar las múltiples dimensiones y factores que impactan en el bienestar y la salud de los niños ecuatorianos</strong>.</p>
+<p>Como investigador novato, enfrenté <em>la inexperiencia y la vastedad de un océano de datos</em>. Sin embargola claridad con la que mi director planeteó la pregunta de investigación facilitó las cosas muchisimo. si tuviera que plantearla nuevamente escribiria lo siguiente:</p>
+<blockquote class="blockquote">
+<p><strong>Controlando por las características del niño, el hogar y la vivienda ¿en que medida la condición de hacinamiento incrementa la probabilidad de que un niño contraiga alguna afección respiratoria o estomacal?</strong></p>
+</blockquote>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Puede consultar más sobre la ECV en su página oficial <a href="https://www.ecuadorencifras.gob.ec/encuesta-de-condiciones-de-vida-ecv/">aquí</a>.</p>
+</div></div><p>Una pregunta de investigación bien clara y definida nos acolita a:</p>
+<ol type="1">
+<li><p>Dirigir el proceso de análisis hacía hallazgos que aporten evidencia a nuestras hipotesisi y supuestos.</p></li>
+<li><p>Dirigir la interpretación de los resultados</p></li>
+<li><p>Darle humanidad a los datos que por si solos son insumos potenciales</p></li>
+<li><p>Comprender las limitaciones, alcances y sesgos de nuestra investigación que pueden introducirse voluntaria e involuntariamente</p></li>
+<li><p>Facilita la comunicación de los resultados y metodologias empleadas</p></li>
+</ol>
+<ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li class="active"><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<section id="datos" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="datos">Datos</h3>
+<p>Como mencioné, en mi trabajo de tesis trabaje con la Encuesta de Condiciones de Vida, pero en esta ocasión voy a trabajar con la <strong>Encuesta Nacional sobre Desnutrición Infantil (ENDI)</strong>. Ambas son operaciones estadística desarrolladas por el Instituto Nacional de Estadísticas y Censos. La ENDI es una herramienta para conocer la situación nutricional de las niñas y niños menores de 5 años en Ecuador. En ese sentido, la ENDI ofrece variables con definiciones suficientes para poder replicar los resultados que presente en mi trabajo de tesis. (💫)</p>
+<p>La ENDI es la primera encuesta longitudinal especializada en estudiar la desnutrición infantil y sus determinantes en el país. Fue desarrollada para proporcionar información oportuna y continua que permitiera seguir la desnutrición crónica infantil, una condición que puede llevar a problemas de aprendizaje, sobrepeso, obesidad, enfermedades no transmisibles en la adultez y dificultades laborales en la vida adulta</p>
+<p>La ENDI se implementa a través de una muestra nacional recolectada durante 12 meses, donde personal capacitado realiza:</p>
+<ol type="1">
+<li>Mediciones antropométricas de los niños y otras características</li>
+<li>Tomas de sangre</li>
+<li>Pruebas de la calidad del agua</li>
+<li>Condiciones de la vivienda y el hogar</li>
+<li>Acceso a controles prenatales, esquemas de vacunación y programas de primera infancia</li>
+</ol>
+<p>Solo por nombrar algunas relevantes para nuestro webinar. En cuanto al diseño muestral, la ENDI es una encuesta continua distribuida homogéneamente en el tiempo y espacio a través de una agregación de muestra mensual. La cobertura de la encuesta es nacional, abarcando áreas urbanas y rurales, con una representatividad de 24 provincias y un dominio auto representado que incluye un agregado de 728 parroquias priorizadas, con una muestra de 22.848 viviendas. 🏘️</p>
+<p>Para asegurar la calidad, se realizaron pruebas piloto, se contó con la capacitación de entidades como UNICEF y el Ministerio de Salud Pública (MSP), y se supervisaron todos los niveles de recolección de datos. Además, se hicieron seguimientos de atípicos y se tomaron medidas para garantizar la integridad de la información durante el procesamiento y análisis.</p>
+<p>Aquí he realizado un resumen muy reducido de la complejidad que representa llevar a cabo este tipo de operaciones estadísticas. Antes del uso de la base de datos, debemos hacer una evaluación de los datos. Entonces ,aquí les comparto el orden en que lei la documentación de la ENDI y su relación con la pregunta planteada:</p>
+<ol type="1">
+<li><a href="https://www.bing.com/ck/a?!&amp;&amp;p=83da393a7e001373JmltdHM9MTcwMjUxMjAwMCZpZ3VpZD0yNmFiNzI5OC04NjhkLTY2NDQtMWM0Mi02MDNhODdmNjY3YTgmaW5zaWQ9NTE3Nw&amp;ptn=3&amp;ver=2&amp;hsh=3&amp;fclid=26ab7298-868d-6644-1c42-603a87f667a8&amp;psq=endi+inec+2023&amp;u=a1aHR0cHM6Ly93d3cuZWN1YWRvcmVuY2lmcmFzLmdvYi5lYy9kb2N1bWVudG9zL3dlYi1pbmVjL0VOREkvUHJlc2VudGFjaW9uX2RlX1Jlc3VsdGFkb3NfRU5ESV9SMS5wZGY&amp;ntb=1" title="Presentación de resultados ENDI">Presentación de resultados de la ENDI</a></li>
+<li>Metodologia, Diseño Muestral, Evaluación de Calidad en la <a href="https://www.ecuadorencifras.gob.ec/encuesta_nacional_desnutricion_infantil/documentaci%c3%b3n.html">documentación de la ENDI.</a></li>
+<li><a href="https://www.ecuadorencifras.gob.ec/documentos/web-inec/ENDI/Guia_BDD_ENDI_R1.pdf">Guía de uso de la base de datos</a></li>
+</ol>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Accede a esta y más documentación sobre la ENDI en la <a href="https://www.ecuadorencifras.gob.ec/encuesta_nacional_desnutricion_infantil/" title="página oficial de la ENDI.">página oficial de la ENDI.</a></p>
+</div></div><p>Dicho esto, vamos ya a trabajar con la ENDI para responder nuestra pregunta de investigación, por que la ENDI tiene el sello de aprobación de Chuck Norris ya que tiene variables suficientes para replicar algunos resultados interesantes de mi tesis.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="https://i.makeagif.com/media/9-19-2014/gaz1Ae.gif" class="img-fluid"></p>
+</div></div></section>
+<section id="herramienta-de-trabajo" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="herramienta-de-trabajo">Herramienta de trabajo</h3>
+<p>Ya mencioné una cuantas ventajas de los archivos <code>Quarto</code>, pero vamos con algunos detalles. La principal ventaja de los documentos <code>Quarto</code> es la capacidad de integrar código, narrativa e incluso otros lenguajes en un solo archivo, en un solo entorno de desarrollo (RStudio, Visual Studio Code, JetBrains). (👌) Otra razón para usar <code>Quarto</code>, es la facilidad para hacer citas bibliográficas, los documentos de la documentación como los metadatos y la metodología. vamos citarla facilmente.</p>
+<p>Y la razón por la que más me gustan estos documentos es que puedo mantener mi investigación documentada de manera reproducible, con código y comentarios detallados que clarifican cada paso del proceso. Sumemosle, la flexibilidad de Quarto para generar salidas en múltiples formatos asegura que los hallazgos de nuestra investigación sean accesibles para una audiencia amplia, desde colegas académicos hasta responsables de la formulación de políticas. Para este ejercicio vamos a usar <code>Quarto</code> y <code>R</code> para responder a la pregunta de investigación.</p>
+<ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li class="active"><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<p>Es esencial tener un ambiente de trabajo organizado y estructurado. Aquí te muestro cómo configurar tu proyecto en RStudio y cómo Quarto puede jugar un papel crucial en tu análisis.</p>
+<p><strong>1. Nombrar tu Proyecto</strong></p>
+<p>El nombre del proyecto debe ser descriptivo pero conciso. Por ejemplo, si tu investigación se centra en el hacinamiento y la salud infantil, podrías nombrar tu proyecto como “salud_hacinamiento_ninez”. Esto facilitará la identificación del proyecto y su propósito a primera vista.</p>
+<p><strong>2. Crear un Proyecto en RStudio</strong></p>
+<p>En RStudio, crea un nuevo proyecto:</p>
+<ul>
+<li><p>Ve a <strong>File &gt; New Project.</strong></p></li>
+<li><p>Selecciona <strong>New Directory</strong> para comenzar desde cero.</p></li>
+<li><p>Elige un proyecto de <code>R.</code></p></li>
+<li><p>Escribe el nombre que has elegido y selecciona una ubicación adecuada en tu sistema de archivos.</p></li>
+<li><p>RStudio creará una nueva carpeta con el nombre del proyecto.</p></li>
+</ul>
+<p><strong>3. Organizar las Carpetas</strong></p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>La descarga de la base de datos la puedes realizar en este <a href="enlace.">enlace.</a> La carpeta del proyecto debe verse asi:</p>
+<p><img src="images/directory.png" class="img-fluid"></p>
+<p>Una vez descargados y descomprimidos los archivos de la ENDI, el directorio <code>data/</code> debe verse de la siguiente manera:</p>
+<p><img src="images/data.png" class="img-fluid"></p>
+<p>En la carpeta de cada una de las bases de datos están los siguientes archivos:</p>
+<p><img src="images/inside.png" class="img-fluid"></p>
+</div></div><p>Una vez que hayas creado el proyecto, estructura tus carpetas de la siguiente manera:</p>
+<ul>
+<li><p><strong><code>data/</code></strong>: para almacenar conjuntos de datos.</p></li>
+<li><p><strong><code>documents/</code></strong>: para tus scripts de R, archivos Quarto y otros documentos relacionados con el análisis.</p></li>
+<li><p><strong><code>figures/</code></strong>: para las visualizaciones generadas.</p></li>
+<li><p><strong><code>scripts/</code></strong>: para scripts de R más generales o de configuración.</p></li>
+</ul>
+<p><strong>4. Uso de <code>here</code> para Acceder a Datos</strong></p>
+<p>El paquete <strong><code>here</code></strong> es excelente para hacer referencia a archivos dentro de tu proyecto sin preocuparte por la ruta absoluta. Instálalo utilizando <strong><code>install.packages("here")</code></strong> y luego simplemente usa <strong><code>here::here()</code></strong> para construir rutas relativas dentro de tus archivos Quarto. Para este análisis vamos a utilizar las bases de datos de la ENDI en formato <code>.dta</code> nativo de Stata. Estos archivos conservan las etiquetas y otros meta datos utiles para nuestro análisis. Empecemos con el análisis con la carga de librerias y la lectura de la base de datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manejo de bases de datos</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fácil acceso a los datos</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/alex_ergostats/OneDrive/Documentos/ergostat_administrativo/talleres_externos/taller_operaciones_stat_diciembre_2023</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manejo de encuestas complejas</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(srvyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'srvyr'
+
+The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'survey' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: grid
+Loading required package: Matrix
+
+Attaching package: 'Matrix'
+
+The following objects are masked from 'package:tidyr':
+
+    expand, pack, unpack
+
+Loading required package: survival
+
+Attaching package: 'survey'
+
+The following object is masked from 'package:graphics':
+
+    dotchart</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lectura de archivos Stata</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Impresion de tablas lindas</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#StandWithUkraine</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Por ejemplo si queremos usar una base de datos en específico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Base de datos de personas y caracteristicas, madres y niños:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>data_personas <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_personas"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_personas.dta"</span>))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Base de datos con caracteristicas del hogar:</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>data_hogar <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_hogar"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_hogar.dta"</span>))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Salud de los niños y controles:</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>data_salud_ninez <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_hogar"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>             <span class="st">"BDD_ENDI_R1_f1_hogar.dta"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>Quarto</code> y la librería <code>here</code> funcionan de maravilla juntos.</p>
+<p><strong>5. Archivo <code>.bib</code> para Referencias Bibliográficas</strong></p>
+<p>Dentro de la carpeta <strong><code>documents/</code></strong>, crea un archivo BibTeX (<strong><code>.bib</code></strong>) que contendrá todas tus referencias bibliográficas. En Quarto, puedes citar estas referencias utilizando la sintaxis adecuada y Quarto las incorporará automáticamente en tu documento final.</p>
+<p><strong>6. Crear un Archivo Quarto</strong></p>
+<p>Dentro de <strong><code>documents/</code></strong>, crea un archivo Quarto (<strong><code>.qmd</code></strong>) donde realizarás todo tu análisis y escritura. En la parte superior de este archivo, configura el uso del archivo <strong><code>.bib</code></strong> para las referencias:</p>
+</section>
+<section id="cómo-incluir-bibliografía" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="cómo-incluir-bibliografía">Cómo Incluir Bibliografía</h3>
+<p>Si estás usando Quarto o R Markdown, puedes incluir un archivo <code>.bib</code> para las referencias bibliográficas:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Tu Análisis"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="an">output:</span><span class="co"> html_document</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> bibliografia.bib</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>Tu texto...</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Referencia a un paper <span class="co">[</span><span class="ot">@tuReferencia</span><span class="co">]</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>En <code>bibliografia.bib</code>, incluye las referencias en el formato adecuado. Por ejemplo:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bib code-with-copy"><code class="sourceCode bibtex"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">@article</span>{<span class="ot">tuReferencia</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>={Título del artículo},</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>={Autor, A.},</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">journal</span>={Nombre del journal},</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>={2020},</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">volume</span>={10},</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>={100-110}</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Consejos Finales</strong></p>
+<ul>
+<li><p><strong>Versiona tu Proyecto</strong>: Utiliza un sistema de control de versiones como Git desde el principio.</p></li>
+<li><p><strong>Comentarios y Documentación</strong>: Documenta tu código y tu análisis extensamente. Explica qué estás haciendo y por qué.</p></li>
+<li><p><strong>Respalda tus Datos</strong>: Asegúrate de tener copias de seguridad de tus datos y tu proyecto.</p></li>
+</ul>
+<p>¡Y eso es todo! Con estos pasos, tienes una base sólida para comenzar tu proyecto de investigación con R y Quarto. Recuerda, la organización y la documentación son claves para un proyecto exitoso y reproducible.</p>
+<p>Como mencioné la idea de trabajar con los archivos <code>.dta</code> es el aprovechar los atributos de las columnas dependiendo de su tipo, veamos algunos casos:<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable de identificación de UPM</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(data_personas<span class="sc">$</span>id_upm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$label
+[1] "Identificador de upm"
+
+$format.stata
+[1] "%-9s"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable categórica de región:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(data_personas<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$label
+[1] "Región"
+
+$format.stata
+[1] "%10.0g"
+
+$class
+[1] "haven_labelled" "vctrs_vctr"     "double"        
+
+$labels
+  Sierra    Costa Amazonía 
+       1        2        3 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable numérica (toma 1 de la talla):</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(data_personas<span class="sc">$</span>f1_s5_5_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$label
+[1] "Longitud 1"
+
+$format.stata
+[1] "%10.0g"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in rm(data_personas, data_hogar, data_hogar): objeto 'data_hogar' no
+encontrado</code></pre>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Si deseas ver los atributos de todas las columnas en la consola puedes utilizar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(data_personas, attributes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta instrucción te devolverá una lista, su longitud dependerá del número de variables en la base de datos.</p>
+</div></div><ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li class="active"><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<p>Para calcular la desnutrición crónica infantil y otros indicadores relevantes a partir de la Encuesta Nacional sobre Desnutrición Infantil (ENDI) en R, primero debes establecer un proyecto organizado y estructurado. Aquí está un resumen simplificado del proceso:</p>
+</section>
+<section id="proceso-de-cálculo-de-la-desnutrición-crónica-infantil" class="level3">
+<h3 class="anchored" data-anchor-id="proceso-de-cálculo-de-la-desnutrición-crónica-infantil">Proceso de Cálculo de la Desnutrición Crónica Infantil:</h3>
+<ol type="1">
+<li><strong>Preparación de Datos</strong>:
+<ul>
+<li>Importar el conjunto de datos y seleccionar las variables necesarias, como la edad en días, el sexo y medidas antropométricas.</li>
+</ul></li>
+<li><strong>Cálculo de Z-Scores</strong>:
+<ul>
+<li>Utilizar la edad en días y medidas antropométricas (peso, longitud/talla) para calcular los Z-scores correspondientes a peso-para-edad, longitud/talla-para-edad, y peso-para-longitud/talla utilizando estándares de la OMS.</li>
+</ul></li>
+<li><strong>Identificación de Desnutrición Crónica</strong>:
+<ul>
+<li>Clasificar a los niños con un Z-score de longitud/talla-para-edad por debajo de -2 como desnutridos crónicamente.</li>
+</ul></li>
+<li><strong>Ajuste por Factores de Expansión</strong>:
+<ul>
+<li>Ajustar los cálculos de prevalencia de desnutrición utilizando el factor de expansión del niño para obtener estimaciones representativas a nivel nacional.</li>
+</ul></li>
+</ol>
+</section>
+<section id="cálculo-del-proceso-de-eliminación-de-excretas" class="level3">
+<h3 class="anchored" data-anchor-id="cálculo-del-proceso-de-eliminación-de-excretas">Cálculo del Proceso de Eliminación de Excretas:</h3>
+<ol type="1">
+<li><strong>Selección de Variables</strong>:
+<ul>
+<li>Determinar la variable que indica el método principal de eliminación de excretas en el hogar.</li>
+</ul></li>
+<li><strong>Clasificación de Prácticas</strong>:
+<ul>
+<li>Clasificar las prácticas de eliminación de excretas en categorías de adecuación, basadas en criterios de salud pública y saneamiento.</li>
+</ul></li>
+</ol>
+</section>
+<section id="indicador-de-agua-segura" class="level3">
+<h3 class="anchored" data-anchor-id="indicador-de-agua-segura">Indicador de Agua Segura:</h3>
+<ol type="1">
+<li><strong>Selección de Variables</strong>:
+<ul>
+<li>Seleccionar las variables relacionadas con la fuente de agua y los resultados de pruebas de calidad del agua, como la presencia de cloro y E. coli.</li>
+</ul></li>
+<li><strong>Cálculo del Indicador</strong>:
+<ul>
+<li>Clasificar las fuentes de agua como “segura” o “no segura” basándose en las pruebas de calidad y las pautas de la OMS.</li>
+</ul></li>
+</ol>
+</section>
+<section id="cálculo-de-otras-variables" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="cálculo-de-otras-variables">Cálculo de Otras Variables:</h3>
+<p>Para el resto de las variables, seguirás una metodología similar, seleccionando las variables apropiadas de la ENDI, realizando cálculos o clasificaciones basadas en definiciones establecidas y ajustando por factores de expansión cuando sea necesario. Este proceso deberá estar guiado por la metodología y guía de uso de la base de datos de la ENDI, que proporcionará detalles específicos sobre cómo se deben manejar y calcular cada una de las variables.</p>
+<p>Cada paso del proceso debe ser documentado cuidadosamente y las decisiones metodológicas deben ser claras y justificadas. Al trabajar con datos de la ENDI, es crucial tener en cuenta los aspectos éticos, como la confidencialidad y el consentimiento informado, y asegurarse de que el uso de los datos esté en línea con los términos establecidos por la institución proveedora de los datos.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<ul>
+<li>La sintaxis de construcción de la base de datos para el webinar lo puedes encontrar en <code>scripts/script.R</code></li>
+<li>Mientras que la sintaxis oficial del INEC puedes descargarla de <a href="https://www.ecuadorencifras.gob.ec/documentos/web-inec/ENDI/Sintaxis_ENDI_R1.zip">este enlace.</a></li>
+</ul>
+</div></div><p>Con la sintaxis señalada tenemos los siguientes resultados que podemos comparar con los resultados publicados por el INEC en su página web lo cual es una buena noticia para continuar nuestro analisis.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv3Nl514RP2-xjd1E-CZSvmY3EEU-naB10ULJGTqRL_w&amp;s.png" class="img-fluid"></p>
+</div></div><p>Ya entrando en materia es importante señalar que es una muestra compleja, y que está compuesta por 5 bases de datos de las cuales usaremos 3:</p>
+<ol type="1">
+<li><code>BDD_END_R1_f1_hogar</code> la cual contiene información acerca de las características del hogar y la vivienda.</li>
+<li><code>BDD_END_R1_f1_personas</code> la cual contienen información sobre los miembros de las viviendas dentro del marco de muestreo.</li>
+<li><code>BDD_END_R1_f2_salud_ninez</code>la cual contiene información acerca del estado de salud de los niños en sus distintas tomas de muestra.</li>
+</ol>
+<p>Con estas tres bases de datos se construyó la base de datos de trabajo para este Webinar. La guarde en formato <code>.rds</code> para que me sea más fácil leer desde R. Ya que mantuve la estructura de la base de datos de niños, ahora vamos a leer la base de datos para luego emplear <code>srvyr</code> para declarar mi diseño maestral y empezar nuestro análisis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lectura</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>base_trabajo <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"procesada"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"base_final_para_modelo.rds"</span>))</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Antes de iniciar con el diseño muestral vamos a calcular la variable clave:</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>base_trabajo <span class="ot">&lt;-</span> base_trabajo <span class="sc">%&gt;%</span> </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hacinamiento =</span> personas_por_hogar <span class="sc">/</span> habitaciones,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">hacinamiento =</span> <span class="fu">if_else</span>(</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>           hacinamiento <span class="sc">&gt;=</span> <span class="dv">3</span>,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">true =</span> <span class="dv">1</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">false =</span> <span class="dv">0</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">missing =</span> <span class="cn">NA_real_</span>))</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Diseño muestral</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>survey_design <span class="ot">&lt;-</span> base_trabajo <span class="sc">%&gt;%</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_survey_design</span>(</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">ids =</span> <span class="st">"id_upm"</span>,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">strata =</span> <span class="st">"estrato"</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">weights =</span> <span class="st">"fexp"</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>survey_design</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stratified 1 - level Cluster Sampling design (with replacement)
+With (2822) clusters.
+Called via srvyr
+Sampling variables:
+ - ids: id_upm
+ - strata: estrato
+ - weights: fexp
+Data variables: id_upm (chr), estrato (chr), fexp (dbl), quintil (fct),
+  categoria_seguridad_alimentaria (fct), n_hijos (int), nbi_1 (fct), area
+  (fct), region (fct), personas_por_hogar (int), habitaciones (dbl),
+  categoria_agua (fct), serv_hig (fct), categoria_cocina (fct),
+  categoria_basura (fct), tipo_de_piso (fct), espacio_lavado (dbl), sexo (fct),
+  edad_en_días (dbl), etnia (fct), prematuro (dbl), consumo_acido_folico_hierro
+  (fct), control_nino_sano (dbl), desparacitacion (dbl), diarrea (dbl),
+  respiratorias (dbl), hacinamiento (dbl)</code></pre>
+</div>
+</div>
+<ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li class="active"><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<p>Vaya recorrido que hemos echo para iniciar el código para el análisis de los <em>efectos del hacinamiento sobre la salud y bienestar de los niños.</em> Empezare con una pequeña anotación, <strong>los resultados aquí presentados están sujetos a mejora (<em>todos los análisis tienen esa propiedad</em>)</strong> hay mucho que hacer antes de utilizar estos resultados de manera definitiva. El objetivo del Webinar es ilumar el camino sobre como abrodar las operaciones estadísticas para responder una pregunta de investigación.</p>
+<p>Primero hagamos un resumen simple:, por suerte <code>gtsummary</code> tiene una función bastante útil para hacer el análisis preliminar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antes vamos a darle atributos a la variable de hacinamiento:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(base_trabajo<span class="sc">$</span>hacinamiento,<span class="st">"label"</span>) <span class="ot">&lt;-</span> <span class="st">"Condición de hacinamiento"</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>base_trabajo <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(quintil,region,area,diarrea,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>         respiratorias, n_hijos, personas_por_hogar, hacinamiento) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="romoomyjvs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#romoomyjvs table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#romoomyjvs thead, #romoomyjvs tbody, #romoomyjvs tfoot, #romoomyjvs tr, #romoomyjvs td, #romoomyjvs th {
+  border-style: none;
+}
+
+#romoomyjvs p {
+  margin: 0;
+  padding: 0;
+}
+
+#romoomyjvs .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#romoomyjvs .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#romoomyjvs .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#romoomyjvs .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#romoomyjvs .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#romoomyjvs .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#romoomyjvs .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#romoomyjvs .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#romoomyjvs .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#romoomyjvs .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#romoomyjvs .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#romoomyjvs .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#romoomyjvs .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#romoomyjvs .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#romoomyjvs .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#romoomyjvs .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#romoomyjvs .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#romoomyjvs .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#romoomyjvs .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#romoomyjvs .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#romoomyjvs .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#romoomyjvs .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#romoomyjvs .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#romoomyjvs .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#romoomyjvs .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#romoomyjvs .gt_left {
+  text-align: left;
+}
+
+#romoomyjvs .gt_center {
+  text-align: center;
+}
+
+#romoomyjvs .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#romoomyjvs .gt_font_normal {
+  font-weight: normal;
+}
+
+#romoomyjvs .gt_font_bold {
+  font-weight: bold;
+}
+
+#romoomyjvs .gt_font_italic {
+  font-style: italic;
+}
+
+#romoomyjvs .gt_super {
+  font-size: 65%;
+}
+
+#romoomyjvs .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#romoomyjvs .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#romoomyjvs .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#romoomyjvs .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#romoomyjvs .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#romoomyjvs .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#romoomyjvs .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="<strong>Characteristic</strong>"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="<strong>N = 18,728</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>"><strong>N = 18,728</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">Quintil</td>
+<td headers="stat_0" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 1</td>
+<td headers="stat_0" class="gt_row gt_center">3,765 (20%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 2</td>
+<td headers="stat_0" class="gt_row gt_center">3,363 (18%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 3</td>
+<td headers="stat_0" class="gt_row gt_center">3,495 (19%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 4</td>
+<td headers="stat_0" class="gt_row gt_center">3,642 (19%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 5</td>
+<td headers="stat_0" class="gt_row gt_center">4,463 (24%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Región</td>
+<td headers="stat_0" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Sierra</td>
+<td headers="stat_0" class="gt_row gt_center">9,366 (50%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Costa</td>
+<td headers="stat_0" class="gt_row gt_center">5,682 (30%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Amazonía</td>
+<td headers="stat_0" class="gt_row gt_center">3,680 (20%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Área</td>
+<td headers="stat_0" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Urbano</td>
+<td headers="stat_0" class="gt_row gt_center">11,369 (61%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Rural</td>
+<td headers="stat_0" class="gt_row gt_center">7,359 (39%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Diarrea</td>
+<td headers="stat_0" class="gt_row gt_center">3,655 (20%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Infecciones respiratorias</td>
+<td headers="stat_0" class="gt_row gt_center">10,288 (55%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left"># de hijos</td>
+<td headers="stat_0" class="gt_row gt_center">2 (1, 3)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Personas por hogar</td>
+<td headers="stat_0" class="gt_row gt_center">4 (4, 6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Condición de hacinamiento</td>
+<td headers="stat_0" class="gt_row gt_center">6,776 (36%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="2"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> n (%); Median (IQR)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+<p>Pero lo importante es ver los datos ponderados para ello empleamos la familia de funciones de la librería <code>survey</code> además debemos emplear nuestro diseño muestral. Por ultimo, vamos a imprimir la tabla con <code>gtsummary.</code><br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>survey_design <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">survey_count</span>(area,hacinamiento) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(area) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()  <span class="sc">%&gt;%</span> </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">hacinamiento =</span> <span class="st">"Niño en condición de hacinamiento"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">n =</span> <span class="st">"Niños"</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">n_se =</span> <span class="st">"Error Estandar"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_nytimes</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="zmjqreaxrw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+#zmjqreaxrw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#zmjqreaxrw thead, #zmjqreaxrw tbody, #zmjqreaxrw tfoot, #zmjqreaxrw tr, #zmjqreaxrw td, #zmjqreaxrw th {
+  border-style: none;
+}
+
+#zmjqreaxrw p {
+  margin: 0;
+  padding: 0;
+}
+
+#zmjqreaxrw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#zmjqreaxrw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zmjqreaxrw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zmjqreaxrw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zmjqreaxrw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zmjqreaxrw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zmjqreaxrw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zmjqreaxrw .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zmjqreaxrw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zmjqreaxrw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zmjqreaxrw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zmjqreaxrw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zmjqreaxrw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zmjqreaxrw .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zmjqreaxrw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zmjqreaxrw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zmjqreaxrw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zmjqreaxrw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zmjqreaxrw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zmjqreaxrw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zmjqreaxrw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zmjqreaxrw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zmjqreaxrw .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#zmjqreaxrw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zmjqreaxrw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zmjqreaxrw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zmjqreaxrw .gt_left {
+  text-align: left;
+}
+
+#zmjqreaxrw .gt_center {
+  text-align: center;
+}
+
+#zmjqreaxrw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zmjqreaxrw .gt_font_normal {
+  font-weight: normal;
+}
+
+#zmjqreaxrw .gt_font_bold {
+  font-weight: bold;
+}
+
+#zmjqreaxrw .gt_font_italic {
+  font-style: italic;
+}
+
+#zmjqreaxrw .gt_super {
+  font-size: 65%;
+}
+
+#zmjqreaxrw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zmjqreaxrw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zmjqreaxrw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zmjqreaxrw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zmjqreaxrw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zmjqreaxrw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zmjqreaxrw .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="Niño en condición de hacinamiento">Niño en condición de hacinamiento</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="Niños">Niños</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="Error Estandar">Error Estandar</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="3" class="gt_group_heading" scope="colgroup" id="Urbano">Urbano</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Urbano  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">0</td>
+<td headers="Urbano  n" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">7329.159</td>
+<td headers="Urbano  n_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">162.1576</td></tr>
+    <tr><td headers="Urbano  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">1</td>
+<td headers="Urbano  n" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">4792.916</td>
+<td headers="Urbano  n_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">198.5300</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="3" class="gt_group_heading" scope="colgroup" id="Rural">Rural</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Rural  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">0</td>
+<td headers="Rural  n" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">3842.994</td>
+<td headers="Rural  n_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">115.9166</td></tr>
+    <tr><td headers="Rural  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">1</td>
+<td headers="Rural  n" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">2796.525</td>
+<td headers="Rural  n_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">106.7995</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>Hagamos unos cálculos adicionales antes de continuar con la visualización de datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># edad media en días: por sexo</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>survey_design <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sexo, hacinamiento) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    mean_edad_en_días <span class="ot">=</span> <span class="fu">survey_mean</span>(edad_en_días, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    sd_edad_en_días <span class="ot">=</span> <span class="fu">survey_sd</span>(edad_en_días, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_nytimes</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="oxzhfesglc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+#oxzhfesglc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#oxzhfesglc thead, #oxzhfesglc tbody, #oxzhfesglc tfoot, #oxzhfesglc tr, #oxzhfesglc td, #oxzhfesglc th {
+  border-style: none;
+}
+
+#oxzhfesglc p {
+  margin: 0;
+  padding: 0;
+}
+
+#oxzhfesglc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#oxzhfesglc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#oxzhfesglc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#oxzhfesglc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#oxzhfesglc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#oxzhfesglc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#oxzhfesglc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#oxzhfesglc .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#oxzhfesglc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#oxzhfesglc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#oxzhfesglc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#oxzhfesglc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#oxzhfesglc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#oxzhfesglc .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#oxzhfesglc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxzhfesglc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#oxzhfesglc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#oxzhfesglc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#oxzhfesglc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxzhfesglc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#oxzhfesglc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxzhfesglc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#oxzhfesglc .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#oxzhfesglc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxzhfesglc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oxzhfesglc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxzhfesglc .gt_left {
+  text-align: left;
+}
+
+#oxzhfesglc .gt_center {
+  text-align: center;
+}
+
+#oxzhfesglc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#oxzhfesglc .gt_font_normal {
+  font-weight: normal;
+}
+
+#oxzhfesglc .gt_font_bold {
+  font-weight: bold;
+}
+
+#oxzhfesglc .gt_font_italic {
+  font-style: italic;
+}
+
+#oxzhfesglc .gt_super {
+  font-size: 65%;
+}
+
+#oxzhfesglc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#oxzhfesglc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#oxzhfesglc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#oxzhfesglc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#oxzhfesglc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#oxzhfesglc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#oxzhfesglc .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="hacinamiento">hacinamiento</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="mean_edad_en_días">mean_edad_en_días</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="mean_edad_en_días_se">mean_edad_en_días_se</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: 'Source Sans Pro'; text-transform: uppercase;" scope="col" id="sd_edad_en_días">sd_edad_en_días</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="4" class="gt_group_heading" scope="colgroup" id="Mujer">Mujer</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Mujer  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">0</td>
+<td headers="Mujer  mean_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">975.3620</td>
+<td headers="Mujer  mean_edad_en_días_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">10.22349</td>
+<td headers="Mujer  sd_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">510.9262</td></tr>
+    <tr><td headers="Mujer  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">1</td>
+<td headers="Mujer  mean_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">908.6124</td>
+<td headers="Mujer  mean_edad_en_días_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">14.85242</td>
+<td headers="Mujer  sd_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">505.7143</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="4" class="gt_group_heading" scope="colgroup" id="Hombre">Hombre</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Hombre  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">0</td>
+<td headers="Hombre  mean_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">965.3533</td>
+<td headers="Hombre  mean_edad_en_días_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">10.42491</td>
+<td headers="Hombre  sd_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">515.7492</td></tr>
+    <tr><td headers="Hombre  hacinamiento" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">1</td>
+<td headers="Hombre  mean_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">882.4268</td>
+<td headers="Hombre  mean_edad_en_días_se" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">13.22056</td>
+<td headers="Hombre  sd_edad_en_días" class="gt_row gt_right" style="font-family: 'Source Sans Pro'; font-weight: 400;">511.9667</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vamos a mejorar esta tabla :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora que hemos realizado ya un primer cálculo de los momentos de una variable numérica, hagamos un <em>T-test</em> para determinar si existe una diferencia significativa entre el numero de hijos que existen en hogares en condición de hacinamiento y hogares que no están en esta condición.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numero de hujos en los hogares de niños que viven en hogares con condición de hacinamiento.</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>survey_design <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">survey_count</span>(hacinamiento,n_hijos) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n_se) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> hacinamiento,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 3
+   n_hijos      `0`     `1`
+     &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+ 1       1 3274.    2275.  
+ 2       2 4275.    2552.  
+ 3       3 2674.    1364.  
+ 4       4  667.     832.  
+ 5       5  195.     342.  
+ 6       6   65.3    124.  
+ 7       7   15.7     56.0 
+ 8       8    4.53    26.6 
+ 9       9    0.553    4.46
+10      10   NA        2.06
+11      11   NA        4.34
+12      12   NA        2.70
+13      13   NA        5.12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>survey_design <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">svyttest</span>(<span class="at">formula =</span> n_hijos <span class="sc">~</span> hacinamiento)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in m$df.resid: encuentros parciales de 'df.resid' to 'df.residual'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Design-based t-test
+
+data:  n_hijos ~ hacinamiento
+t = 6.191, df = 2674, p-value = 6.899e-10
+alternative hypothesis: true difference in mean is not equal to 0
+95 percent confidence interval:
+ 0.1562284 0.3010658
+sample estimates:
+difference in mean 
+         0.2286471 </code></pre>
+</div>
+</div>
+<p>Ahora que ya hemos utilizado de forma variada las funciones de <code>survey</code> y <code>srvyr.</code> Con ustedes queridos asistentes del webinar vamos a utilizar <code>ggplot2</code> para reproducir y mejorar los gráficos de mi tesis:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>prop_hacinamineto <span class="ot">&lt;-</span> survey_design <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(etnia) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarise</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">props =</span> <span class="fu">survey_mean</span>(hacinamiento,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">proportion =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">"se"</span>, <span class="st">"ci"</span>, <span class="st">"cv"</span>),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">na.rm =</span> T</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        ) </span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>grafico <span class="ot">&lt;-</span> prop_hacinamineto <span class="sc">%&gt;%</span> </span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> etnia,<span class="at">y =</span> props, <span class="at">fill =</span> etnia)) <span class="sc">+</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(props,<span class="dv">3</span>)),<span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>() <span class="sc">+</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">70</span>)) <span class="sc">+</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Porcentaje"</span>,</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Etnía"</span>,</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Porcentaje de niños en condición de hacinamiento"</span>,</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Por etnia"</span>)</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Para hacer dinamico el gráfico:</span></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="co"># plotly::ggplotly(grafico)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="consejos-para-la-visualización-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="consejos-para-la-visualización-de-datos">Consejos para la Visualización de Datos</h3>
+<ol type="1">
+<li><strong>Conoce tu Variable</strong>:
+<ul>
+<li>Las variables secuenciales (como ingresos o edad) se benefician de paletas secuenciales donde la intensidad del color se corresponde con la magnitud del valor.</li>
+<li>Las variables con un punto medio crítico (como el balance de temperatura o cambios en el tiempo) se visualizan mejor con paletas divergentes que destacan los valores extremos y el punto de inflexión.</li>
+<li>Para datos categóricos o nominales (como tipos de vivienda o grupos étnicos), las paletas cualitativas son más adecuadas porque usan colores distintivos para diferenciar las categorías sin implicar orden o jerarquía.</li>
+</ul></li>
+<li><strong>Elige la Paleta Correcta</strong>:
+<ul>
+<li><p><strong>Paletas Secuenciales</strong>: Emplea colores que varíen en luminosidad, desde tonos claros para valores bajos hasta tonos oscuros para valores altos. Herramientas como ColorBrewer pueden ayudarte a seleccionar esquemas de colores que sean perceptivamente uniformes.</p></li>
+<li><p><strong>Paletas Divergentes</strong>: Utiliza colores que contrasten para los extremos y un color neutral para el punto medio. Esto es particularmente útil para resaltar desviaciones de una norma o valor central.</p></li>
+<li><p><strong>Paletas Cualitativas</strong>: Combina colores que sean visualmente distintos y equilibrados. Evita usar colores que puedan confundirse entre sí, especialmente para las personas con daltonismo.</p></li>
+</ul></li>
+<li><strong>Consistencia en el Uso de Colores</strong>:
+<ul>
+<li>Mantén consistencia en tu esquema de colores a lo largo de todas las visualizaciones dentro de un mismo conjunto de datos para evitar confundir al lector.</li>
+</ul></li>
+<li><strong>Atención al Daltonismo</strong>:
+<ul>
+<li>Al elegir colores, considera la accesibilidad para personas con daltonismo. Evita combinaciones de colores como rojo-verde que son difíciles de distinguir para quienes tienen esta condición.</li>
+</ul></li>
+<li><strong>No Exagerar</strong>:
+<ul>
+<li>Usa el color con moderación. Demasiados colores o colores demasiado intensos pueden distraer o confundir.</li>
+</ul></li>
+<li><strong>Contexto y Cultura</strong>:
+<ul>
+<li>Sé consciente del contexto cultural y las connotaciones que los colores pueden tener. Por ejemplo, el rojo puede significar peligro en algunos contextos, mientras que en otros puede simbolizar prosperidad.</li>
+</ul></li>
+</ol>
+</section>
+<section id="aplicando-los-consejos-en-r" class="level3">
+<h3 class="anchored" data-anchor-id="aplicando-los-consejos-en-r">Aplicando los Consejos en R</h3>
+<ul>
+<li><p><strong>Paletas con R</strong>: Usa paquetes como <code>RColorBrewer</code>, <code>viridis</code> o <code>ggthemes</code> para acceder a una variedad de paletas de colores ya definidas y adecuadas para distintos tipos de datos.</p></li>
+<li><p><strong>Visualización con <code>ggplot2</code></strong>:</p>
+<ul>
+<li>Personaliza tus gráficos con <code>scale_fill_brewer()</code> o <code>scale_color_viridis()</code> para aplicar las paletas elegidas.</li>
+<li>Utiliza <code>theme()</code> para mantener un estilo consistente en todas tus visualizaciones.</li>
+</ul></li>
+</ul>
+<ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li class="active"><strong>Replica de resultados de mi tesis</strong></li>
+    <li><strong>Resumen y cierre</strong></li>
+</ol>
+<p>Para analizar la relación entre hacinamiento y la salud respiratoria, vamos a emplear un modelo logit o probit con los paquetes <code>survey</code> y <code>srvyr</code>. Luego, para presentar los resultados de manera clara y concisa, vamos a utilizar nuevamente el paquete <code>gtsummary</code>. Aquí te muestro cómo hacerlo paso a paso:</p>
+</section>
+<section id="modelo-logitprobit" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-logitprobit">Modelo Logit/Probit</h3>
+<p>¿Cuál es la diferencia entre los modelos logit y probit? Estos son dos métodos que a menudo usamos cuando queremos entender la relación entre una serie de factores y una variable de resultado que es dicotómica, es decir, que tiene solo dos posibles resultados (como “sí” o “no”, “éxito” o “fracaso”).</p>
+<p>Imaginen que están tratando de predecir algo que solo puede tener dos resultados. Por ejemplo, ¿un estudiante aprobará o no su examen final? Aquí es donde entran en juego los modelos logit y probit.</p>
+<section id="modelo-logit" class="level4">
+<h4 class="anchored" data-anchor-id="modelo-logit">Modelo Logit:</h4>
+<p>El modelo logit, también conocido como regresión logística, utiliza la función logística para vincular las variables independientes (como horas de estudio, asistencia a clases) con la probabilidad de un resultado específico (aprobar el examen). Lo interesante de la función logística es que siempre produce un valor entre 0 y 1, lo que es perfecto para representar probabilidades. Además, su curva tiene una forma de “S”. Esto significa que los cambios en las variables independientes tienen un mayor efecto en las probabilidades cuando estamos en el medio de la curva (probabilidades cercanas al 50%), y menos efecto cuando las probabilidades están muy cerca de 0% o 100%.</p>
+</section>
+<section id="modelo-probit" class="level4">
+<h4 class="anchored" data-anchor-id="modelo-probit">Modelo Probit:</h4>
+<p>El modelo probit, por otro lado, utiliza la función de distribución acumulativa normal para el mismo propósito. Al igual que el modelo logit, transforma las probabilidades en una escala que va de 0 a 1. Sin embargo, la forma de la curva es ligeramente diferente debido a la naturaleza de la distribución normal (o campana de Gauss). Esta diferencia puede ser relevante en situaciones donde los valores extremos (muy cercanos a 0 o a 1) son comunes.</p>
+</section>
+<section id="cuál-elegir" class="level4">
+<h4 class="anchored" data-anchor-id="cuál-elegir">¿Cuál Elegir?</h4>
+<p>Entonces, ¿cuál deberías usar? En la mayoría de los casos, tanto logit como probit ofrecerán resultados similares, especialmente para valores de probabilidad que no están cerca de los extremos. La elección entre uno y otro a menudo se basa en preferencias o convenciones en su campo específico. En algunas situaciones, especialmente en economía, el modelo probit es más común debido a ciertas propiedades matemáticas que asume.</p>
+<p>Realiza el análisis de regresión logística o probit para estudiar la relación entre hacinamiento y salud respiratoria.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo logit</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>modelo_logit <span class="ot">&lt;-</span> <span class="fu">svyglm</span>(respiratorias <span class="sc">~</span> hacinamiento <span class="sc">+</span> sexo <span class="sc">+</span> edad_en_días <span class="sc">+</span> etnia <span class="sc">+</span> prematuro <span class="sc">+</span> quintil <span class="sc">+</span> categoria_seguridad_alimentaria <span class="sc">+</span> n_hijos <span class="sc">+</span> nbi_1 <span class="sc">+</span> area <span class="sc">+</span> region <span class="sc">+</span> categoria_agua <span class="sc">+</span> serv_hig <span class="sc">+</span> categoria_cocina <span class="sc">+</span> categoria_basura <span class="sc">+</span> tipo_de_piso <span class="sc">+</span> espacio_lavado, </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">design =</span> survey_design,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">family =</span> <span class="fu">quasibinomial</span>())</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Para un modelo probit, cambia 'family = quasibinomial()' a 'family = binomial(link = "probit")'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="tabla-de-beta-y-odds-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="tabla-de-beta-y-odds-ratio">Tabla de Beta y Odds Ratio</h3>
+<p>Utiliza <code>gtsummary</code> para crear una tabla con los betas y odds ratios del modelo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">tbl_regression</span>(modelo_logit, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="co"># exponentiate = TRUE para mostrar Odds Ratios</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>tabla</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="dvwykgoags" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dvwykgoags table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#dvwykgoags thead, #dvwykgoags tbody, #dvwykgoags tfoot, #dvwykgoags tr, #dvwykgoags td, #dvwykgoags th {
+  border-style: none;
+}
+
+#dvwykgoags p {
+  margin: 0;
+  padding: 0;
+}
+
+#dvwykgoags .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dvwykgoags .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dvwykgoags .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dvwykgoags .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dvwykgoags .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dvwykgoags .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dvwykgoags .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dvwykgoags .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dvwykgoags .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dvwykgoags .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dvwykgoags .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dvwykgoags .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dvwykgoags .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dvwykgoags .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dvwykgoags .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dvwykgoags .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dvwykgoags .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dvwykgoags .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dvwykgoags .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dvwykgoags .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dvwykgoags .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dvwykgoags .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dvwykgoags .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dvwykgoags .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dvwykgoags .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dvwykgoags .gt_left {
+  text-align: left;
+}
+
+#dvwykgoags .gt_center {
+  text-align: center;
+}
+
+#dvwykgoags .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dvwykgoags .gt_font_normal {
+  font-weight: normal;
+}
+
+#dvwykgoags .gt_font_bold {
+  font-weight: bold;
+}
+
+#dvwykgoags .gt_font_italic {
+  font-style: italic;
+}
+
+#dvwykgoags .gt_super {
+  font-size: 65%;
+}
+
+#dvwykgoags .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dvwykgoags .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dvwykgoags .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dvwykgoags .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dvwykgoags .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dvwykgoags .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dvwykgoags .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="<strong>Characteristic</strong>"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="<strong>OR</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>"><strong>OR</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="<strong>95% CI</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="<strong>p-value</strong>"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">hacinamiento</td>
+<td headers="estimate" class="gt_row gt_center">1.17</td>
+<td headers="ci" class="gt_row gt_center">1.03, 1.33</td>
+<td headers="p.value" class="gt_row gt_center">0.013</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Sexo</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Mujer</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Hombre</td>
+<td headers="estimate" class="gt_row gt_center">1.05</td>
+<td headers="ci" class="gt_row gt_center">0.96, 1.15</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Edad en meses</td>
+<td headers="estimate" class="gt_row gt_center">1.00</td>
+<td headers="ci" class="gt_row gt_center">1.00, 1.00</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Etnia</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Mestizo/Blanco</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Indígena</td>
+<td headers="estimate" class="gt_row gt_center">1.00</td>
+<td headers="ci" class="gt_row gt_center">0.84, 1.18</td>
+<td headers="p.value" class="gt_row gt_center">&gt;0.9</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Afroecuatoriana/o</td>
+<td headers="estimate" class="gt_row gt_center">0.97</td>
+<td headers="ci" class="gt_row gt_center">0.76, 1.23</td>
+<td headers="p.value" class="gt_row gt_center">0.8</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Montubia/o</td>
+<td headers="estimate" class="gt_row gt_center">0.92</td>
+<td headers="ci" class="gt_row gt_center">0.69, 1.22</td>
+<td headers="p.value" class="gt_row gt_center">0.6</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Prematuro</td>
+<td headers="estimate" class="gt_row gt_center">1.10</td>
+<td headers="ci" class="gt_row gt_center">0.90, 1.34</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Quintil</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 1</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 2</td>
+<td headers="estimate" class="gt_row gt_center">0.85</td>
+<td headers="ci" class="gt_row gt_center">0.73, 1.00</td>
+<td headers="p.value" class="gt_row gt_center">0.057</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 3</td>
+<td headers="estimate" class="gt_row gt_center">0.94</td>
+<td headers="ci" class="gt_row gt_center">0.80, 1.11</td>
+<td headers="p.value" class="gt_row gt_center">0.5</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 4</td>
+<td headers="estimate" class="gt_row gt_center">0.77</td>
+<td headers="ci" class="gt_row gt_center">0.66, 0.92</td>
+<td headers="p.value" class="gt_row gt_center">0.003</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Quintil 5</td>
+<td headers="estimate" class="gt_row gt_center">0.76</td>
+<td headers="ci" class="gt_row gt_center">0.64, 0.92</td>
+<td headers="p.value" class="gt_row gt_center">0.004</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Seguridad alimentaria</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Seguridad</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Inseguridad leve</td>
+<td headers="estimate" class="gt_row gt_center">1.34</td>
+<td headers="ci" class="gt_row gt_center">1.16, 1.54</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Inseguridad media</td>
+<td headers="estimate" class="gt_row gt_center">1.50</td>
+<td headers="ci" class="gt_row gt_center">1.28, 1.76</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Inseguridad alta</td>
+<td headers="estimate" class="gt_row gt_center">1.36</td>
+<td headers="ci" class="gt_row gt_center">1.13, 1.64</td>
+<td headers="p.value" class="gt_row gt_center">0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left"># de hijos</td>
+<td headers="estimate" class="gt_row gt_center">1.01</td>
+<td headers="ci" class="gt_row gt_center">0.96, 1.06</td>
+<td headers="p.value" class="gt_row gt_center">0.7</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Pobreza por NBI</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No pobreza por NBI</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Pobreza por NBI</td>
+<td headers="estimate" class="gt_row gt_center">0.88</td>
+<td headers="ci" class="gt_row gt_center">0.75, 1.03</td>
+<td headers="p.value" class="gt_row gt_center">0.10</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Área</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Urbano</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Rural</td>
+<td headers="estimate" class="gt_row gt_center">0.93</td>
+<td headers="ci" class="gt_row gt_center">0.79, 1.09</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Región</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Sierra</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Costa</td>
+<td headers="estimate" class="gt_row gt_center">1.18</td>
+<td headers="ci" class="gt_row gt_center">1.03, 1.35</td>
+<td headers="p.value" class="gt_row gt_center">0.015</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Amazonía</td>
+<td headers="estimate" class="gt_row gt_center">1.17</td>
+<td headers="ci" class="gt_row gt_center">1.02, 1.35</td>
+<td headers="p.value" class="gt_row gt_center">0.022</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Agua segura</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Agua Segura</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Agua Básica</td>
+<td headers="estimate" class="gt_row gt_center">0.89</td>
+<td headers="ci" class="gt_row gt_center">0.50, 1.56</td>
+<td headers="p.value" class="gt_row gt_center">0.7</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Agua Limitada</td>
+<td headers="estimate" class="gt_row gt_center">0.97</td>
+<td headers="ci" class="gt_row gt_center">0.74, 1.28</td>
+<td headers="p.value" class="gt_row gt_center">0.8</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Otra</td>
+<td headers="estimate" class="gt_row gt_center">0.64</td>
+<td headers="ci" class="gt_row gt_center">0.21, 1.94</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Servicio higiénico</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Alcantarillado</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Excusado/pozo</td>
+<td headers="estimate" class="gt_row gt_center">0.93</td>
+<td headers="ci" class="gt_row gt_center">0.79, 1.10</td>
+<td headers="p.value" class="gt_row gt_center">0.4</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Letrina/no tiene</td>
+<td headers="estimate" class="gt_row gt_center">0.97</td>
+<td headers="ci" class="gt_row gt_center">0.74, 1.29</td>
+<td headers="p.value" class="gt_row gt_center">0.8</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Cocina</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Gas/Electricidad</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Leña o carbón</td>
+<td headers="estimate" class="gt_row gt_center">1.33</td>
+<td headers="ci" class="gt_row gt_center">0.81, 2.20</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No cocina</td>
+<td headers="estimate" class="gt_row gt_center">0.14</td>
+<td headers="ci" class="gt_row gt_center">0.04, 0.43</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Basura</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Adecuada</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No adecuada</td>
+<td headers="estimate" class="gt_row gt_center">1.13</td>
+<td headers="ci" class="gt_row gt_center">0.76, 1.68</td>
+<td headers="p.value" class="gt_row gt_center">0.5</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Tipo de piso</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Adecuado</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Cemento/Ladrillo</td>
+<td headers="estimate" class="gt_row gt_center">1.19</td>
+<td headers="ci" class="gt_row gt_center">1.05, 1.34</td>
+<td headers="p.value" class="gt_row gt_center">0.005</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Tierra</td>
+<td headers="estimate" class="gt_row gt_center">1.00</td>
+<td headers="ci" class="gt_row gt_center">0.74, 1.36</td>
+<td headers="p.value" class="gt_row gt_center">&gt;0.9</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Tabla/Caña</td>
+<td headers="estimate" class="gt_row gt_center">1.02</td>
+<td headers="ci" class="gt_row gt_center">0.82, 1.26</td>
+<td headers="p.value" class="gt_row gt_center">0.9</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Otro</td>
+<td headers="estimate" class="gt_row gt_center">4.58</td>
+<td headers="ci" class="gt_row gt_center">0.31, 68.5</td>
+<td headers="p.value" class="gt_row gt_center">0.3</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Espacio de lavado</td>
+<td headers="estimate" class="gt_row gt_center">1.02</td>
+<td headers="ci" class="gt_row gt_center">0.70, 1.50</td>
+<td headers="p.value" class="gt_row gt_center">&gt;0.9</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> OR = Odds Ratio, CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="qué-es-un-odds-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="qué-es-un-odds-ratio">¿Qué es un Odds Ratio?</h3>
+<p>Un Odds Ratio es simplemente una forma de comparar si la probabilidad de un evento (como contraer una enfermedad) es mayor en un grupo que en otro. Se calcula tomando las odds (o probabilidades) de que el evento ocurra en un grupo y dividiéndolas por las odds del evento en otro grupo.</p>
+</section>
+<section id="interpretación-de-los-odds-ratios" class="level3">
+<h3 class="anchored" data-anchor-id="interpretación-de-los-odds-ratios">Interpretación de los Odds Ratios:</h3>
+<ol type="1">
+<li><strong>Odds Ratio = 1</strong>:
+<ul>
+<li>Significa que las probabilidades del evento son iguales en ambos grupos. En nuestro ejemplo, esto indicaría que el medicamento no tiene efecto en la probabilidad de contraer la enfermedad.</li>
+</ul></li>
+<li><strong>Odds Ratio &gt; 1</strong>:
+<ul>
+<li>Indica que el evento es más probable en el primer grupo. Por ejemplo, un Odds Ratio de 2 significa que el grupo que tomó el medicamento tiene el doble de probabilidades de contraer la enfermedad comparado con el grupo que no lo tomó. Esto sería una mala señal para el medicamento.</li>
+</ul></li>
+<li><strong>Odds Ratio &lt; 1</strong>:
+<ul>
+<li>Aquí es donde las cosas se ponen interesantes. Un Odds Ratio menor que 1 sugiere que el evento es menos probable en el primer grupo. Por ejemplo, un Odds Ratio de 0.5 indicaría que el medicamento reduce a la mitad la probabilidad de contraer la enfermedad, lo cual sería una buena noticia.</li>
+</ul></li>
+</ol>
+</section>
+<section id="ejemplo-práctico" class="level3">
+<h3 class="anchored" data-anchor-id="ejemplo-práctico">Ejemplo Práctico:</h3>
+<p>Supongamos que realizamos un estudio y encontramos un Odds Ratio de 0.3 para enfermarse entre quienes tomaron el medicamento comparado con quienes no lo hicieron. Esto se interpretaría como que aquellos que tomaron el medicamento tienen un 70% menos de probabilidades de enfermarse en comparación con quienes no lo tomaron.</p>
+</section>
+<section id="importancia" class="level3">
+<h3 class="anchored" data-anchor-id="importancia">Importancia:</h3>
+<p>Es fundamental entender que el Odds Ratio no es una medida directa de riesgo. Un Odds Ratio de 2 no significa que haya un riesgo del 200%. Más bien, habla sobre cómo se compara el riesgo en dos grupos diferentes.</p>
+<p>Los Odds Ratios son especialmente útiles en estudios donde seguimos a grupos a lo largo del tiempo o en estudios de casos y controles, donde medir el riesgo directo es complicado o imposible.</p>
+</section>
+<section id="consejos-adicionales" class="level3">
+<h3 class="anchored" data-anchor-id="consejos-adicionales">Consejos Adicionales:</h3>
+<ul>
+<li><strong>Verificación</strong>: Comprueba la multicolinealidad y la adecuación del modelo.</li>
+<li><strong>Interpretación</strong>: Sé cauteloso al interpretar los odds ratios y recuerda que representan la odds de un evento ocurriendo versus no ocurriendo.</li>
+<li><strong>Comunicación de Resultados</strong>: En tu blog o presentación, asegúrate de explicar los términos técnicos de manera accesible.</li>
+</ul>
+<ol class="custom-list">
+    <li><strong>Definición de la pregunta de invesigación</strong></li>
+    <li><strong>Busqueda de fuentes de información y elección de la herramienta de trabajo</strong></li>
+    <li><strong>Definición de un directorio de trabajo con un proyecto</strong></li>
+    <li><strong>Principio de reproducibilidad: Replica de indicadores publicados</strong></li>
+    <li><strong>Apuntes sobre visualización</strong></li>
+    <li><strong>Replica de resultados de mi tesis</strong></li>
+    <li class="active"><strong>Resumen y cierre</strong></li>
+</ol>
+<p><strong>Conclusión: Principios de la Ciencia de Datos Aplicados al Análisis de la Encuesta Nacional sobre Desnutrición Infantil (ENDI)</strong></p>
+<p>En nuestro viaje a través del análisis de la Encuesta Nacional sobre Desnutrición Infantil (ENDI), hemos abordado varios aspectos fundamentales de la ciencia de datos, desde la reproducibilidad y el manejo responsable de los metadatos hasta el uso efectivo de herramientas de software y la importancia de la comunidad en el aprendizaje continuo.</p>
+</section>
+<section id="principio-de-reproducibilidad" class="level3">
+<h3 class="anchored" data-anchor-id="principio-de-reproducibilidad">Principio de Reproducibilidad</h3>
+<p>La reproducibilidad es esencial en cualquier análisis de datos. Utilizando Quarto, hemos logrado documentar no solo nuestros resultados sino también el proceso que los llevó a ellos. Esto significa que cualquier persona con acceso a nuestro código y datos puede verificar nuestros hallazgos y comprender exactamente cómo llegamos a nuestras conclusiones.</p>
+</section>
+<section id="manejo-responsable-de-metadatos-y-metodologías" class="level3">
+<h3 class="anchored" data-anchor-id="manejo-responsable-de-metadatos-y-metodologías">Manejo Responsable de Metadatos y Metodologías</h3>
+<p>Una parte clave de nuestro trabajo ha sido el manejo cuidadoso de los metadatos y las metodologías. Al trabajar con la ENDI, hemos respetado y documentado la estructura y el significado de cada variable, asegurando que nuestros análisis sean tanto válidos como interpretables.</p>
+</section>
+<section id="uso-de-tidyverse-survey-y-srvyr" class="level3">
+<h3 class="anchored" data-anchor-id="uso-de-tidyverse-survey-y-srvyr">Uso de Tidyverse, Survey y Srvyr</h3>
+<p>El paquete Tidyverse nos ha permitido manejar datos de manera eficiente y elegante, mientras que los paquetes Survey y Srvyr han sido cruciales para analizar los datos de la ENDI, que provienen de un diseño de muestra complejo. Estas herramientas han permitido un análisis riguroso, respetando las particularidades de los datos de la encuesta.</p>
+</section>
+<section id="espacios-de-comunidad-para-aprender-ciencia-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="espacios-de-comunidad-para-aprender-ciencia-de-datos">Espacios de Comunidad para Aprender Ciencia de Datos</h3>
+<p>No podemos subestimar la importancia de los espacios comunitarios en nuestro aprendizaje y desarrollo profesional. Foros, grupos de estudio y conferencias en línea han sido fundamentales para compartir conocimientos, resolver dudas y mantenernos actualizados en las últimas tendencias y técnicas en ciencia de datos.</p>
+</section>
+<section id="abordando-el-problema-del-hacinamiento" class="level3">
+<h3 class="anchored" data-anchor-id="abordando-el-problema-del-hacinamiento">Abordando el Problema del Hacinamiento</h3>
+<p>Finalmente, el problema del hacinamiento y su impacto en la salud infantil ha sido un foco principal de nuestro análisis. Hemos aplicado todas estas herramientas y principios para entender mejor esta cuestión, llegando a insights valiosos que podrían informar políticas públicas y estrategias de intervención.</p>
+<p>En resumen, este proyecto ha sido un claro ejemplo de cómo la ciencia de datos puede ser aplicada de manera responsable y efectiva para abordar problemas reales, produciendo resultados que no solo son técnicamente sólidos sino también accesibles y útiles para la sociedad. Es un recordatorio poderoso de la relevancia de nuestro campo y de la importancia de hacer nuestro trabajo con integridad, precisión y un sentido de propósito.</p>
+<p>Gracias a todos por acompañarme en este fascinante recorrido por el mundo de los datos y su aplicación en problemas sociales tan importantes. ¡Sigamos aprendiendo y creciendo juntos en esta emocionante disciplina!</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
